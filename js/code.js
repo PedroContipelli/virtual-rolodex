@@ -58,6 +58,12 @@ function doLogin()
 
 }
 
+
+function signUp() {
+	console.log("Hit signup button");
+}
+
+
 function saveCookie()
 {
 	var minutes = 20;
