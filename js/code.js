@@ -1,4 +1,4 @@
-var urlBase = 'http://159.89.88.229/LAMPAPI';
+var urlBase = 'http://contactmanagers.xyz/LAMPAPI';
 var extension = 'php';
 
 var userId = 0;
@@ -17,7 +17,7 @@ function doLogin()
 	
 	document.getElementById("loginResult").innerHTML = "";
 
-	var tmp = {login:login,password:password};
+	var tmp = {Login:login,Password:password};
 //	var tmp = {login:login,password:hash};
 	var jsonPayload = JSON.stringify( tmp );
 	
