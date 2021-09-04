@@ -1,23 +1,20 @@
-
 <?php
-
 	$inData = getRequestInfo();
 	
-	$id = 0;
-	$firstName = "";
-	$lastName = "";
-	$userName = "";
-	$passWord = "":
+	$firstName = $inData["FirstName"];
+	$lastName = $inData["LastName"];
+	$username = $inData["Username"];
+	$password = $inData["Password"];
 
-	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331"); 	
+	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if( $conn->connect_error )
 	{
 		returnWithError( $conn->connect_error );
 	}
 	else
 	{
-		$stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
-		$stmt->bind_param("ssss", $inData["FirstName"], $inData["LastName"], $inData["Login"], $inData["Password"]);
+		$stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?,?,?,?)");
+		$stmt->bind_param("ssss", $firstName, $lastName, $username, $password);
 		$stmt->execute();
 		$stmt->close();
 		$conn->close();
@@ -32,14 +29,14 @@
 	function sendResultInfoAsJson( $obj )
 	{
 		header('Content-type: application/json');
-		header('Access-Control-Allow-Origin: *');
-		header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
+		//header('Access-Control-Allow-Origin: *');
+		//header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
 		echo $obj;
 	}
 	
 	function returnWithError( $err )
 	{
-		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
