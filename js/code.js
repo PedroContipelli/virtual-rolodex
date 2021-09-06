@@ -61,6 +61,52 @@ function doLogin()
 
 function signUp() {
 	console.log("Hit signup button");
+
+    userId = 0;
+	
+	var username = document.getElementById("userName").value;
+	var password = document.getElementById("password").value;
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value; 
+//	var hash = md5( password );
+	
+	document.getElementById("loginResult").innerHTML = "";
+
+	var tmp = {Login:username,Password:password,
+            fName:firstName,lName:lastName};
+//	var tmp = {login:login,password:hash};
+	var jsonPayload = JSON.stringify( tmp );
+	
+	var url = urlBase + '/SignUp.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				var jsonObject = JSON.parse( xhr.responseText );
+				userId = jsonObject.id;
+		
+                // NOTE: may need to handle more than one user with same credentials!
+
+				firstName = jsonObject.firstName;
+				lastName = jsonObject.lastName;
+
+				saveCookie();
+	
+				window.location.href = "index.html";
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("loginResult").innerHTML = err.message;
+	}
 }
 
 
