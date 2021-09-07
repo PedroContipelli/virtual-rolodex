@@ -67,13 +67,18 @@ function signUp() {
 	var username = document.getElementById("userName").value;
 	var password = document.getElementById("password").value;
     var firstName = document.getElementById("firstName").value;
-    var lastName = document.getElementById("lastName").value; 
+    var lastName = document.getElementById("lastName").value;
+    
+    console.log(username)
+    console.log(lastName) 
+    console.log(firstName)
+    console.log(password)
 //	var hash = md5( password );
 	
 	document.getElementById("loginResult").innerHTML = "";
 
-	var tmp = {Login:username,Password:password,
-            fName:firstName,lName:lastName};
+	var tmp = {Username:username,Password:password,
+            FirstName:firstName,LastName:lastName};
 //	var tmp = {login:login,password:hash};
 	var jsonPayload = JSON.stringify( tmp );
 	
