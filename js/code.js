@@ -74,8 +74,7 @@ function signUp() {
     console.log(firstName)
     console.log(password)
 //	var hash = md5( password );
-	
-	document.getElementById("loginResult").innerHTML = "";
+
 
 	var tmp = {Username:username,Password:password,
             FirstName:firstName,LastName:lastName};
