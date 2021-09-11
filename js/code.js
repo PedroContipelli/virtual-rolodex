@@ -46,7 +46,7 @@ function doLogin()
 
 				saveCookie();
 	
-				window.location.href = "color.html";
+				window.location.href = "managePage.html";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -74,7 +74,8 @@ function signUp() {
     console.log(firstName)
     console.log(password)
 //	var hash = md5( password );
-
+	
+	//document.getElementById("loginResult").innerHTML = "";
 
 	var tmp = {Username:username,Password:password,
             FirstName:firstName,LastName:lastName};
@@ -84,7 +85,7 @@ function signUp() {
 	var url = urlBase + '/SignUp.' + extension;
 
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
+	xhr.open("POST", url, true); // process user input (post request)
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try
 	{
@@ -102,7 +103,7 @@ function signUp() {
 
 				saveCookie();
 	
-				window.location.href = "index.html";
+				window.location.href = "managePage.html";
 			}
 		};
 		xhr.send(jsonPayload);
