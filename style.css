@@ -8,7 +8,7 @@ body {
   align-items: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #F0E5CF;
+  background-color: #F8F0DF;
 }
 
 .form-signin {
@@ -43,8 +43,8 @@ body {
 }
 
 .btn {
-  background-color: #4B6587;
-  border-color: #4B6587;
+  background-color: #79B4B7;
+  border-color: #4a8a8d;
   margin-bottom: 2.5%;
 }
 
