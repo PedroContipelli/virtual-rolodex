@@ -1,4 +1,4 @@
-var urlBase = 'http://contactmanagers.xyz/LAMPAPI';
+var urlBase = 'http://172.22.174.0/LAMPAPI';
 var extension = 'php';
 
 var userId = 0;
@@ -326,3 +326,55 @@ function searchContact()
 	}
 	
 }
+
+function getContacts()
+{
+	var contactList = "";
+
+	var tmp = {userId:userId};
+	var jsonPayload = JSON.stringify( tmp );
+
+	var url = urlBase + '/GetContacts.' + extension;
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				var jsonObject = JSON.parse( xhr.responseText );
+				
+				for(var i=0; i < jsonObject.results.length; i++)
+				{
+					contactList += "<tr>\n";
+					contactList += "<th scope=\"row\">" + (i+1) + "</th>";
+
+					for ( var j=0; j < jsonObject.results[i].length; j++ )
+					{
+						contactList += "<td>" + jsonObject.results[i][j] + "</td>\n";
+					}
+
+					contactList += "<td class=\"buttonsCell\">\n";
+					contactList += "<button type=\"submit\" name=\"editBtn\" class=\"btn btn-primary btn-sm editBtn\"><i class=\"fas fa-user-edit\"></i></button>\n";
+					contactList += "<button type=\"submit\" name=\"deleteBtn\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-trash\"></i></button>\n";
+					contactList += "</td>\n";
+					contactList += "</tr>\n";
+				}
+
+				document.getElementsByTagName("tbody")[0].innerHTML = contactList;
+				//console.log(document.getElementById("contactListDataInTable"));
+				//document.getElementById("contactListDataInTable") = contactList;
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("contactSearchResult").innerHTML = err.message;
+	}
+	
+}
+
