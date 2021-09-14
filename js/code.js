@@ -1,4 +1,4 @@
-var urlBase = 'http://172.22.174.0/LAMPAPI';
+var urlBase = 'http://contactmanagers.xyz/LAMPAPI';
 var extension = 'php';
 
 var userId = 0;
@@ -358,8 +358,8 @@ function getContacts()
 					}
 
 					contactList += "<td class=\"buttonsCell\">\n";
-					contactList += "<button type=\"submit\" name=\"editBtn\" class=\"btn btn-primary btn-sm editBtn\"><i class=\"fas fa-user-edit\"></i></button>\n";
-					contactList += "<button type=\"submit\" name=\"deleteBtn\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-trash\"></i></button>\n";
+					contactList += "<button type=\"button\" name=\"editBtn\" class=\"btn btn-primary btn-sm editBtn\"><i class=\"fas fa-user-edit\"></i></button>\n";
+					contactList += "<button type=\"button\" name=\"deleteBtn\" class=\"btn btn-primary btn-sm\" data-bs-toggle=\"modal\" data-bs-target=\"#Modal\"><i class=\"fas fa-trash\"></i></button>\n";
 					contactList += "</td>\n";
 					contactList += "</tr>\n";
 				}
@@ -377,4 +377,3 @@ function getContacts()
 	}
 	
 }
-
