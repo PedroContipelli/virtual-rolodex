@@ -81,6 +81,10 @@ body {
   margin-left: 2.5%;
 }
 
+#buttonsCell {
+  text-align: right;
+}
+
 
 #logOutBtn {
   margin-left: 50%;

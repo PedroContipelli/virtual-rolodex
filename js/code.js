@@ -4,6 +4,8 @@ var extension = 'php';
 var userId = 0;
 var firstName = "";
 var lastName = "";
+var contactMap = {};	// key = tableRow, value = customerID
+var contactRow = -1;
 
 function doLogin()
 {
@@ -352,14 +354,16 @@ function getContacts()
 					contactList += "<tr>\n";
 					contactList += "<th scope=\"row\">" + (i+1) + "</th>";
 
-					for ( var j=0; j < jsonObject.results[i].length; j++ )
+					contactMap[i + 1] = jsonObject.results[i][0];
+
+					for ( var j=1; j < jsonObject.results[i].length; j++ )
 					{
 						contactList += "<td>" + jsonObject.results[i][j] + "</td>\n";
 					}
 
-					contactList += "<td class=\"buttonsCell\">\n";
+					contactList += "<td id=\"buttonsCell\">\n";
 					contactList += "<button type=\"button\" name=\"editBtn\" class=\"btn btn-primary btn-sm editBtn\"><i class=\"fas fa-user-edit\"></i></button>\n";
-					contactList += "<button type=\"button\" name=\"deleteBtn\" class=\"btn btn-primary btn-sm\" data-bs-toggle=\"modal\" data-bs-target=\"#Modal\"><i class=\"fas fa-trash\"></i></button>\n";
+					contactList += "<button type=\"button\" name=\"deleteBtn\" class=\"btn btn-primary btn-sm\" data-bs-toggle=\"modal\" data-bs-target=\"#Modal\" onclick=\"getContactRowIndex();\"><i class=\"fas fa-trash\"></i></button>\n";
 					contactList += "</td>\n";
 					contactList += "</tr>\n";
 				}
@@ -376,4 +380,44 @@ function getContacts()
 		document.getElementById("contactSearchResult").innerHTML = err.message;
 	}
 	
+}
+
+function getContactRowIndex()
+{
+	const cells = document.querySelectorAll('td');
+	cells.forEach(cell => {
+		cell.addEventListener('click', () => {
+    		console.log("Row index: " + cell.closest('tr').rowIndex + " | Customer ID: " + contactMap[cell.closest('tr').rowIndex]);
+			contactRow = cell.closest('tr').rowIndex;
+		});
+	});
+}
+
+function deleteContact()
+{
+	var tmp = {contactID:contactMap[contactRow],userID:userId};
+	var jsonPayload = JSON.stringify( tmp );
+
+	var url = urlBase + '/DeleteContact.' + extension;
+
+	var xhr = new XMLHttpRequest();
+	xhr.open("DELETE", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function()
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				var jsonObject = JSON.parse( xhr.responseText );
+
+				contactRow = -1;
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("contactAddResult").innerHTML = err.message;
+	}
 }
