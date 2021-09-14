@@ -6,13 +6,20 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.87.0">
-    <title>Sign-up Page</title>
+    <title>Add Contact Page</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
     
     <!--Include script-->
     <script type="text/javascript" src="js/md5.js"></script>
     <script type="text/javascript" src="js/code.js"></script>
+
+    <script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function()
+	{
+		readCookie();
+	}, false);
+    </script>
 
     <!-- Bootstrap core CSS -->
 <link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
@@ -63,16 +70,18 @@
       <label for="lastName">Last Name</label>
     </div>
     <div class="form-floating">
-      <input type="email" class="form-control" id="email" placeholder="email">
-      <label for="userName">Email</label>
+      <input type="text" class="form-control" id="phoneNumber" placeholder="phone">
+      <label for="phone">Phone Number</label>
     </div>
     <div class="form-floating">
-      <input type="number" class="form-control" id="phoneNumber" placeholder="pNumber">
-      <label for="password">Phone Number</label>
+      <input type="email" class="form-control" id="email" placeholder="email">
+      <label for="email">Email</label>
     </div>
+    </br>
 
+    <span id="contactAddResult"></span>
 
-    <button class="w-100 btn btn-lg btn-primary register" type="button">Add</button>
+    <button class="w-100 btn btn-lg btn-primary register" type="button" onclick="addContact();">Add</button>
   </form>
 </main>
 

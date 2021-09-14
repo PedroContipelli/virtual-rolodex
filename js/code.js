@@ -10,17 +10,17 @@ function doLogin()
 	userId = 0;
 	firstName = "";
 	lastName = "";
-	
+
 	var login = document.getElementById("loginName").value;
 	var password = document.getElementById("loginPassword").value;
 //	var hash = md5( password );
-	
+
 	document.getElementById("loginResult").innerHTML = "";
 
 	var tmp = {Login:login,Password:password};
 //	var tmp = {login:login,password:hash};
 	var jsonPayload = JSON.stringify( tmp );
-	
+
 	var url = urlBase + '/Login.' + extension;
 
 	var xhr = new XMLHttpRequest();
@@ -34,19 +34,19 @@ function doLogin()
 			{
 				var jsonObject = JSON.parse( xhr.responseText );
 				userId = jsonObject.id;
-		
+
 				if( userId < 1 )
-				{		
+				{
 					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
 					return;
 				}
-		
+
 				firstName = jsonObject.firstName;
 				lastName = jsonObject.lastName;
 
 				saveCookie();
-	
-				window.location.href = "managePage.html";
+
+				window.location.href = "manage-contacts.html";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -60,28 +60,21 @@ function doLogin()
 
 
 function signUp() {
-	console.log("Hit signup button");
 
     userId = 0;
-	
-	var username = document.getElementById("userName").value;
-	var password = document.getElementById("password").value;
+
+    var username = document.getElementById("userName").value;
+    var password = document.getElementById("password").value;
     var firstName = document.getElementById("firstName").value;
     var lastName = document.getElementById("lastName").value;
-    
-    console.log(username)
-    console.log(lastName) 
-    console.log(firstName)
-    console.log(password)
+
 //	var hash = md5( password );
-	
-	//document.getElementById("loginResult").innerHTML = "";
 
 	var tmp = {Username:username,Password:password,
             FirstName:firstName,LastName:lastName};
 //	var tmp = {login:login,password:hash};
 	var jsonPayload = JSON.stringify( tmp );
-	
+
 	var url = urlBase + '/SignUp.' + extension;
 
 	var xhr = new XMLHttpRequest();
@@ -95,15 +88,15 @@ function signUp() {
 			{
 				var jsonObject = JSON.parse( xhr.responseText );
 				userId = jsonObject.id;
-		
+
                 // NOTE: may need to handle more than one user with same credentials!
 
 				firstName = jsonObject.firstName;
 				lastName = jsonObject.lastName;
 
 				saveCookie();
-	
-				window.location.href = "managePage.html";
+
+				window.location.href = "index.html";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -145,7 +138,7 @@ function readCookie()
 			userId = parseInt( tokens[1].trim() );
 		}
 	}
-	
+
 	if( userId < 0 )
 	{
 		window.location.href = "index.html";
@@ -174,7 +167,7 @@ function addColor()
 	var jsonPayload = JSON.stringify( tmp );
 
 	var url = urlBase + '/AddColor.' + extension;
-	
+
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
@@ -193,7 +186,43 @@ function addColor()
 	{
 		document.getElementById("colorAddResult").innerHTML = err.message;
 	}
-	
+
+}
+
+function addContact()
+{
+        var firstName = document.getElementById("firstName").value;
+        var lastName = document.getElementById("lastName").value;
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        var email = document.getElementById("email").value;
+        document.getElementById("contactAddResult").innerHTML = "";
+
+        var tmp = {FirstName:firstName,LastName:lastName,Phone:phoneNumber,Email:email,UserID:userId};
+        var jsonPayload = JSON.stringify( tmp );
+
+        var url = urlBase + '/AddContact.' + extension;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try
+        {
+                xhr.onreadystatechange = function()
+                {
+                        if (this.readyState == 4 && this.status == 200)
+                        {
+                                document.getElementById("contactAddResult").innerHTML = "Contact has been added";
+                        }
+                };
+                xhr.send(jsonPayload);
+
+		window.location.href = "manage-contacts.html";
+        }
+        catch(err)
+        {
+                document.getElementById("contactAddResult").innerHTML = err.message;
+        }
+
 }
 
 function searchColor()
