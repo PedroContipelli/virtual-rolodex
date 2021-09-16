@@ -1,6 +1,6 @@
 <?php
 	$inData = getRequestInfo();
-	
+
 	$firstName = $inData["FirstName"];
 	$lastName = $inData["LastName"];
 	$phoneNumber = $inData["Phone"];
@@ -8,10 +8,10 @@
 	$userId = $inData["UserID"];
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		returnWithError( $conn->connect_error );
-	} 
+	}
 	else
 	{
 		$stmt = $conn->prepare("INSERT into Contacts (FirstName,LastName,Phone,Email,UserID) VALUES (?,?,?,?,?)");
@@ -32,11 +32,11 @@
 		header('Content-type: application/json');
 		echo $obj;
 	}
-	
+
 	function returnWithError( $err )
 	{
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
-	
+
 ?>

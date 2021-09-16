@@ -26,11 +26,8 @@
         document.addEventListener('DOMContentLoaded', function()
         {
                 readCookie();
-                getContacts();
+                searchContact();
         }, false);
-
-        
-
     </script>
 
   </head>
@@ -42,7 +39,7 @@
         <span id="userName"></span>
       </button>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item" onclick="doLogout();">Logout</a></li>
+        <li><a class="dropdown-item" onclick="doLogout();">Log Out</a></li>
       </ul>
     </div>
 
@@ -53,9 +50,7 @@
     <!-- Contains Search Div -->
     <div class="form-floating" id="searchDiv">
       <input type="text" id="searchText" placeholder="Search" class="form-control">
-      <label for="searchText">Search
-
-    </label>
+      <label for="searchText">Search</label>
 
     <button type="submit" name="button" id="searchBtn" class="btn btn-primary btn-sm" onclick="searchContact();"><i class="fas fa-search"></i></button>
 
@@ -108,8 +103,6 @@
         </div>
       </div>
     </div>
-
-   <!-- <button type="submit" name="logOut" class="btn btn-primary btn-lg" id="logOutBtn" onclick="doLogout();">Log Out</button> -->
 
   </body>
 </html>
