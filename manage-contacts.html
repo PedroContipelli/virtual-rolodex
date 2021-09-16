@@ -36,9 +36,19 @@
   </head>
   <body>
 
-    <div id="loggedInDiv">
-      <span id="userName"></span><br />
+    <div class="loggedInDiv">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <span id="userName"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" onclick="doLogout();">Logout</a></li>
+      </ul>
     </div>
+
+    <br>
+  </div>
+
 
     <!-- Contains Search Div -->
     <div class="form-floating" id="searchDiv">
@@ -61,7 +71,7 @@
       <!-- Below is temporary placeholders -->
       <!-- Adding id "contactList" just in case we want to mess with that -->
       <div id="contactList">
-        <table class="table" id="contactList">
+        <table class="table">
             <thead>
                 <tr>
 		    <th scope="col">#</th>
@@ -99,7 +109,7 @@
       </div>
     </div>
 
-    <button type="submit" name="logOut" class="btn btn-primary btn-lg" id="logOutBtn" onclick="doLogout();">Log Out</button>
+   <!-- <button type="submit" name="logOut" class="btn btn-primary btn-lg" id="logOutBtn" onclick="doLogout();">Log Out</button> -->
 
   </body>
 </html>

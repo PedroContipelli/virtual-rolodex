@@ -6,6 +6,11 @@ body {
   text-align: center;
 } */
 
+.dropdown {
+  margin-top: 5px;
+  margin-left: 86%;
+}
+
 #searchDiv {
   margin-left: 25%;
   margin-top: 5%;
@@ -69,7 +74,10 @@ body {
   border-radius: 10px;
   border-style: solid;
   border-color: #C8C6C6;
-  padding: 1rem 0 0.5rem;
+}
+
+.table {
+  margin-bottom: -1px;
 }
 
 .contactExample {
