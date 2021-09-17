@@ -11,6 +11,15 @@
 		$stmt = $conn->prepare("DELETE FROM Contacts WHERE ID = ? AND UserID = ?");
 		$stmt->bind_param("ii", $inData["contactID"], $inData["userID"]);
 		$stmt->execute();
+
+		if ($stmt->execute() === True)
+		{
+			returnWithInfo( $inData["contactID"], $inData["userID"] );
+		} else
+		{
+			returnWithError($conn->error);
+		}
+
 		$stmt->close();
 		$conn->close();
 	}
@@ -18,6 +27,12 @@
 	function getRequestInfo()
 	{
 		return json_decode(file_get_contents('php://input'), true);
+	}
+
+	function returnWithInfo( $contactID, $userID )
+	{
+		$retValue = '{"contactID":' . $contactID . ',"userID":' . $userID . ',"error":""}';
+		sendResultInfoAsJson( $retValue );
 	}
 
 	function sendResultInfoAsJson( $obj )
@@ -31,5 +46,3 @@
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
-	
-?>

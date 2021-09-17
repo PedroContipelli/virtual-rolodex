@@ -4,7 +4,7 @@ var extension = 'php';
 var userId = 0;
 var firstName = "";
 var lastName = "";
-var contactMap = {};	// key = tableRow, value = customerID
+var contactMap = {};	// key = tableRow, value = contactID
 var contactRow = -1;
 
 function doLogin()
@@ -412,6 +412,7 @@ function deleteContact()
 				var jsonObject = JSON.parse( xhr.responseText );
 
 				contactRow = -1;
+				getContacts();
 			}
 		};
 		xhr.send(jsonPayload);
