@@ -9,16 +9,16 @@
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );
-	} 
+	}
 	else
 	{
-		$stmt = $conn->prepare("select FirstName, LastName, Phone, Email from Contacts where (FirstName like ? or LastName like ? or Phone like ? or Email like ?) and UserID=?");
+		$stmt = $conn->prepare("select ID, FirstName, LastName, Phone, Email from Contacts where (FirstName like ? or LastName like ? or Phone like ? or Email like ?) and UserID=?");
 		$searched = "%" . $inData["search"] . "%";
 		$stmt->bind_param("sssss", $searched, $searched, $searched, $searched, $inData["userId"]);
 		$stmt->execute();
-		
+
 		$result = $stmt->get_result();
-		
+
 		while($row = $result->fetch_assoc())
 		{
 			if( $searchCount > 0 )
@@ -26,9 +26,9 @@
 				$searchResults .= ",";
 			}
 			$searchCount++;
-			$searchResults .= '["' . $row["FirstName"] . '", "' . $row["LastName"] . '", "' . $row["Phone"] . '", "' . $row["Email"] . '"]';
+			$searchResults .= '["' . $row["ID"] . '", "' . $row["FirstName"] . '", "' . $row["LastName"] . '", "' . $row["Phone"] . '", "' . $row["Email"] . '"]';
 		}
-		
+
 		if( $searchCount == 0 )
 		{
 			returnWithError( "No Records Found" );
@@ -37,7 +37,7 @@
 		{
 			returnWithInfo( $searchResults );
 		}
-		
+
 		$stmt->close();
 		$conn->close();
 	}

@@ -7,11 +7,21 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors, edited by: Sebastian Morales">
   <meta name="generator" content="Hugo 0.88.1">
-  <title>Edit</title>
+  <title>Edit Contact</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
 
+  <!--Include script-->
+  <script type="text/javascript" src="js/md5.js"></script>
+  <script type="text/javascript" src="js/code.js"></script>
 
+  <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function()
+      {
+              readCookie();
+	      displayContact();
+      }, false);
+  </script>
 
   <!--  CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
@@ -29,40 +39,40 @@
 
 <body>
 
+  <span id="userName"></span>
+
   <div id="contactInfoDiv">
     <h1>Current Contact Info:</h1>
-    <p>Seb swagmaster 1234567890 epicEmail</p>
+    <p></p>
   </div>
 
 
   <main class="form-signin">
     <form>
+    <div class="form-floating">
+      <input type="text" class="form-control" id="firstName" placeholder="fName">
+      <label for="firstName">First Name</label>
+    </div>
+    <div class="form-floating">
+      <input type="text" class="form-control" id="lastName" placeholder="lName">
+      <label for="lastName">Last Name</label>
+    </div>
+    <div class="form-floating">
+      <input type="tel" class="form-control" id="phoneNumber" placeholder="phone">
+      <label for="phone">Phone Number</label>
+    </div>
+    <div class="form-floating">
+      <input type="email" class="form-control" id="email" placeholder="email">
+      <label for="email">Email</label>
+    </div>
+    </br>
 
-      <div class="form-floating">
-        <input type="text" class="form-control" placeholder="fName">
-        <label for="floatingInput">First Name</label>
-      </div>
-      <div class="form-floating">
-        <input type="text" class="form-control" placeholder="lName">
-        <label for="floatingInput">Last Name</label>
-      </div>
-      <div class="form-floating">
-        <input type="password" class="form-control" placeholder="phoneNum">
-        <label for="floatingPassword">Password</label>
-      </div>
-      <div class="form-floating">
-        <input type="email" class="form-control" placeholder="name@example.com">
-        <label for="floatingInput">Email address</label>
-      </div>
+    <span id="contactEditResult"></span>
 
-
-      <button class="w-100 btn btn-lg btn-primary" id="submitEditBtn" type="submit">Submit Edit Request</button>
+    <button class="w-100 btn btn-lg btn-primary" id="submitEditBtn" type="button" onclick="editContact();">Edit Contact</button>
 
     </form>
   </main>
-
-
-
 </body>
 
 </html>

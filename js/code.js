@@ -160,37 +160,6 @@ function doLogout()
 	window.location.href = "index.html";
 }
 
-function addColor()
-{
-	var newColor = document.getElementById("colorText").value;
-	document.getElementById("colorAddResult").innerHTML = "";
-
-	var tmp = {color:newColor,userId,userId};
-	var jsonPayload = JSON.stringify( tmp );
-
-	var url = urlBase + '/AddColor.' + extension;
-
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorAddResult").innerHTML = "Color has been added";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorAddResult").innerHTML = err.message;
-	}
-
-}
-
 function addContact()
 {
         var firstName = document.getElementById("firstName").value;
@@ -224,100 +193,56 @@ function addContact()
         {
                 document.getElementById("contactAddResult").innerHTML = err.message;
         }
-
-}
-
-function searchColor()
-{
-	var srch = document.getElementById("searchText").value;
-	document.getElementById("colorSearchResult").innerHTML = "";
-	
-	var colorList = "";
-
-	var tmp = {search:srch,userId:userId};
-	var jsonPayload = JSON.stringify( tmp );
-
-	var url = urlBase + '/SearchColors.' + extension;
-	
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorSearchResult").innerHTML = "Color(s) has been retrieved";
-				var jsonObject = JSON.parse( xhr.responseText );
-				
-				for( var i=0; i<jsonObject.results.length; i++ )
-				{
-					colorList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
-					{
-						colorList += "<br />\r\n";
-					}
-				}
-				
-				document.getElementsByTagName("p")[0].innerHTML = colorList;
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorSearchResult").innerHTML = err.message;
-	}
-	
 }
 
 function searchContact()
 {
 	var srch = document.getElementById("searchText").value;
-	//document.getElementById("contactSearchResult").innerHTML = "";
-	
+	contactMap = {};
+
 	var contactList = "";
 
 	var tmp = {search:srch,userId:userId};
 	var jsonPayload = JSON.stringify( tmp );
 
 	var url = urlBase + '/SearchContacts.' + extension;
-	
+
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try
 	{
-		xhr.onreadystatechange = function() 
+		xhr.onreadystatechange = function()
 		{
-			if (this.readyState == 4 && this.status == 200) 
+			if (this.readyState == 4 && this.status == 200)
 			{
 				var jsonObject = JSON.parse( xhr.responseText );
-				
-				for( var i=0; i<jsonObject.results.length; i++ )
+
+				if (jsonObject.results !== undefined)
 				{
-					contactList += "<tr>\n";
-					contactList += "<th scope=\"row\">" + (i+1) + "</th>";
 
-					for ( var j=0; j < jsonObject.results[i].length; j++ )
+					for( var i=0; i<jsonObject.results.length; i++ )
 					{
-						contactList += "<td>" + jsonObject.results[i][j] + "</td>\n";
+						contactList += "<tr>\n";
+						contactList += "<th scope=\"row\">" + (i+1) + "</th>";
+
+						contactMap[i + 1] = jsonObject.results[i][0];
+
+						for ( var j=1; j < jsonObject.results[i].length; j++ )
+						{
+							contactList += "<td>" + jsonObject.results[i][j] + "</td>\n";
+						}
+
+
+						contactList += "<td id=\"buttonsCell\">\n";
+						contactList += "<button type=\"button\" name=\"editBtn\" class=\"btn btn-primary btn-sm editBtn\" onclick=\"editReady();\"><i class=\"fas fa-user-edit\"></i></button>\n";
+						contactList += "<button type=\"button\" name=\"deleteBtn\" class=\"btn btn-primary btn-sm\" data-bs-toggle=\"modal\" data-bs-target=\"#Modal\" onclick=\"getContactRowIndex();\"><i class=\"fas fa-trash\"></i></button>\n";
+						contactList += "</td>\n";
+						contactList += "</tr>\n";
 					}
-
-
-					contactList += "<td class=\"buttonsCell\">\n";
-					contactList += "<button type=\"submit\" name=\"editBtn\" class=\"btn btn-primary btn-sm editBtn\"><i class=\"fas fa-user-edit\"></i></button>\n";
-					contactList += "<button type=\"submit\" name=\"deleteBtn\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-trash\"></i></button>\n";
-					contactList += "</td>\n";
-
-					contactList += "</tr>\n";
 				}
 
-				
 				document.getElementsByTagName("tbody")[0].innerHTML = contactList;
-				//console.log(document.getElementById("contactListDataInTable"));
-				//document.getElementById("contactListDataInTable") = contactList;
 			}
 		};
 		xhr.send(jsonPayload);
@@ -326,7 +251,7 @@ function searchContact()
 	{
 		document.getElementById("contactSearchResult").innerHTML = err.message;
 	}
-	
+
 }
 
 function getContacts()
@@ -337,18 +262,18 @@ function getContacts()
 	var jsonPayload = JSON.stringify( tmp );
 
 	var url = urlBase + '/GetContacts.' + extension;
-	
+
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try
 	{
-		xhr.onreadystatechange = function() 
+		xhr.onreadystatechange = function()
 		{
-			if (this.readyState == 4 && this.status == 200) 
+			if (this.readyState == 4 && this.status == 200)
 			{
 				var jsonObject = JSON.parse( xhr.responseText );
-				
+
 				for(var i=0; i < jsonObject.results.length; i++)
 				{
 					contactList += "<tr>\n";
@@ -362,15 +287,13 @@ function getContacts()
 					}
 
 					contactList += "<td id=\"buttonsCell\">\n";
-					contactList += "<button type=\"button\" name=\"editBtn\" class=\"btn btn-primary btn-sm editBtn\"><i class=\"fas fa-user-edit\"></i></button>\n";
+					contactList += "<button type=\"button\" name=\"editBtn\" class=\"btn btn-primary btn-sm editBtn\" onclick=\"editReady();\"><i class=\"fas fa-user-edit\"></i></button>\n";
 					contactList += "<button type=\"button\" name=\"deleteBtn\" class=\"btn btn-primary btn-sm\" data-bs-toggle=\"modal\" data-bs-target=\"#Modal\" onclick=\"getContactRowIndex();\"><i class=\"fas fa-trash\"></i></button>\n";
 					contactList += "</td>\n";
 					contactList += "</tr>\n";
 				}
 
 				document.getElementsByTagName("tbody")[0].innerHTML = contactList;
-				//console.log(document.getElementById("contactListDataInTable"));
-				//document.getElementById("contactListDataInTable") = contactList;
 			}
 		};
 		xhr.send(jsonPayload);
@@ -379,7 +302,6 @@ function getContacts()
 	{
 		document.getElementById("contactSearchResult").innerHTML = err.message;
 	}
-	
 }
 
 function getContactRowIndex()
@@ -391,6 +313,51 @@ function getContactRowIndex()
 			contactRow = cell.closest('tr').rowIndex;
 		});
 	});
+}
+
+function editReady()
+{
+	getContactRowIndex();
+	var minutes = 20;
+        var date = new Date();
+        date.setTime(date.getTime()+(minutes*60*1000));
+        setTimeout(() => {document.cookie = "contactId=" + contactMap[contactRow] + ";expires=" + date.toGMTString(); window.location.href = 'edit-contact.html';}, 300);
+}
+
+function editContact()
+{
+	var contactId = parseInt(document.cookie.match('(^|;)\\s*' + 'contactId' + '\\s*=\\s*([^;]+)')?.pop() || '');
+	var firstName = document.getElementById("firstName").value;
+        var lastName = document.getElementById("lastName").value;
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        var email = document.getElementById("email").value;
+	document.getElementById("contactEditResult").innerHTML = "";
+
+        var tmp = {ContactID:contactId,FirstName:firstName,LastName:lastName,Phone:phoneNumber,Email:email,UserID:userId};
+        var jsonPayload = JSON.stringify( tmp );
+
+        var url = urlBase + '/EditContact.' + extension;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try
+        {
+                xhr.onreadystatechange = function()
+                {
+                        if (this.readyState == 4 && this.status == 200)
+                        {
+                                document.getElementById("contactEditResult").innerHTML = "Contact has been edited";
+                        }
+                };
+                xhr.send(jsonPayload);
+
+                window.location.href = "manage-contacts.html";
+        }
+        catch(err)
+        {
+                document.getElementById("contactEditResult").innerHTML = err.message;
+        }
 }
 
 function deleteContact()
@@ -421,4 +388,45 @@ function deleteContact()
 	{
 		document.getElementById("contactAddResult").innerHTML = err.message;
 	}
+
+	setTimeout(searchContact, 300);
+}
+
+function displayContact()
+{
+        var contactData = "";
+	var contactId = parseInt(document.cookie.match('(^|;)\\s*' + 'contactId' + '\\s*=\\s*([^;]+)')?.pop() || '');
+        var tmp = {ContactID:contactId,UserID:userId};
+        var jsonPayload = JSON.stringify( tmp );
+
+        var url = urlBase + '/GetContact.' + extension;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try
+        {
+                xhr.onreadystatechange = function()
+                {
+                        if (this.readyState == 4 && this.status == 200)
+                        {
+                                var jsonObject = JSON.parse( xhr.responseText );
+
+                                if (jsonObject.results !== undefined)
+                                {
+                                        for( var i=0; i<jsonObject.results.length; i++ )
+                                        {
+                                                contactData += jsonObject.results[i] + " ";
+                                        }
+                                }
+
+                                document.getElementsByTagName("p")[0].innerHTML = contactData;
+                        }
+                };
+                xhr.send(jsonPayload);
+        }
+        catch(err)
+        {
+                document.getElementById("contactGetResult").innerHTML = err.message;
+        }
 }

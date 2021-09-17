@@ -1,18 +1,22 @@
 <?php
 	$inData = getRequestInfo();
-	
-	$color = $inData["color"];
-	$userId = $inData["userId"];
+
+	$contactId = $inData["ContactID"];
+	$firstName = $inData["FirstName"];
+	$lastName = $inData["LastName"];
+	$phoneNumber = $inData["Phone"];
+	$email = $inData["Email"];
+	$userId = $inData["UserID"];
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		returnWithError( $conn->connect_error );
-	} 
+	}
 	else
 	{
-		$stmt = $conn->prepare("INSERT into Colors (UserId,Name) VALUES(?,?)");
-		$stmt->bind_param("ss", $userId, $color);
+		$stmt = $conn->prepare("UPDATE Contacts SET FirstName=?,LastName=?,Phone=?,Email=? WHERE ID=? AND UserID=?");
+		$stmt->bind_param("ssssii", $firstName, $lastName, $phoneNumber, $email, $contactId, $userId);
 		$stmt->execute();
 		$stmt->close();
 		$conn->close();
@@ -29,11 +33,11 @@
 		header('Content-type: application/json');
 		echo $obj;
 	}
-	
+
 	function returnWithError( $err )
 	{
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
-	
+
 ?>
