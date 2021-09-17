@@ -198,6 +198,7 @@ function addContact()
 function searchContact()
 {
 	var srch = document.getElementById("searchText").value;
+	contactMap = {};
 
 	var contactList = "";
 
@@ -388,4 +389,43 @@ function deleteContact()
 	}
 
 	setTimeout(searchContact, 300);
+}
+
+function displayContact()
+{
+        var contactData = "";
+	var contactId = parseInt(document.cookie.match('(^|;)\\s*' + 'contactId' + '\\s*=\\s*([^;]+)')?.pop() || '');
+        var tmp = {ContactID:contactId,UserID:userId};
+        var jsonPayload = JSON.stringify( tmp );
+
+        var url = urlBase + '/GetContact.' + extension;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try
+        {
+                xhr.onreadystatechange = function()
+                {
+                        if (this.readyState == 4 && this.status == 200)
+                        {
+                                var jsonObject = JSON.parse( xhr.responseText );
+
+                                if (jsonObject.results !== undefined)
+                                {
+                                        for( var i=0; i<jsonObject.results.length; i++ )
+                                        {
+                                                contactData += jsonObject.results[i] + " ";
+                                        }
+                                }
+
+                                document.getElementsByTagName("p")[0].innerHTML = contactData;
+                        }
+                };
+                xhr.send(jsonPayload);
+        }
+        catch(err)
+        {
+                document.getElementById("contactGetResult").innerHTML = err.message;
+        }
 }
