@@ -15,10 +15,16 @@
 	{
 		$stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?,?,?,?)");
 		$stmt->bind_param("ssss", $firstName, $lastName, $username, $password);
-		$stmt->execute();
+
+		if ($stmt->execute() === True)
+		{
+			returnWithInfo( "User successfully created" );
+		} else
+		{
+			returnWithError( "Failed to create user" );
+		}
 		$stmt->close();
 		$conn->close();
-		returnWithError("");
 	}
 	
 	function getRequestInfo()
@@ -34,15 +40,15 @@
 		echo $obj;
 	}
 	
-	function returnWithError( $err )
+	function returnWithError( $msg )
 	{
-		$retValue = '{"error":"' . $err . '"}';
+		$retValue = '{"error":"' . $msg . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
-	function returnWithInfo( $firstName, $lastName, $id )
+	function returnWithInfo( $msg )
 	{
-		$retValue = '{"id":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+		$retValue = '{"result":"' . $msg . '","error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 	
