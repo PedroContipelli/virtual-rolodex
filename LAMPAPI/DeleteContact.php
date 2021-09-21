@@ -13,10 +13,10 @@
 
 		if ($stmt->execute() === True)
 		{
-			returnWithInfo( $inData["contactID"], $inData["userID"] );
+			returnWithInfo( "Contact successfully deleted", $inData["contactID"], $inData["userID"] );
 		} else
 		{
-			returnWithError($conn->error);
+			returnWithError("Failed to delete contact");
 		}
 
 		$stmt->close();
@@ -28,9 +28,9 @@
 		return json_decode(file_get_contents('php://input'), true);
 	}
 
-	function returnWithInfo( $contactID, $userID )
+	function returnWithInfo( $msg, $contactID, $userID )
 	{
-		$retValue = '{"contactID":' . $contactID . ',"userID":' . $userID . ',"error":""}';
+		$retValue = '{"contactID":' . $contactID . ',"userID":' . $userID . ',"result":"' . $msg . '","error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 
@@ -40,9 +40,9 @@
 		echo $obj;
 	}
 
-	function returnWithError( $err )
+	function returnWithError( $msg )
 	{
-		$retValue = '{"error":"' . $err . '"}';
+		$retValue = '{"error":"' . $msg . '"}';
 		sendResultInfoAsJson( $retValue );
 	}
 ?>
