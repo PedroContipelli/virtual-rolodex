@@ -17,10 +17,16 @@
 	{
 		$stmt = $conn->prepare("UPDATE Contacts SET FirstName=?,LastName=?,Phone=?,Email=? WHERE ID=? AND UserID=?");
 		$stmt->bind_param("ssssii", $firstName, $lastName, $phoneNumber, $email, $contactId, $userId);
-		$stmt->execute();
+
+		if ($stmt->execute() === True)
+		{
+			returnWithInfo( "Contact successfully edited", $contactId, $userId );
+		} else
+		{
+			returnWithError("Failed to edit contact");
+		}
 		$stmt->close();
 		$conn->close();
-		returnWithError("");
 	}
 
 	function getRequestInfo()
@@ -34,9 +40,15 @@
 		echo $obj;
 	}
 
-	function returnWithError( $err )
+	function returnWithError( $msg )
 	{
-		$retValue = '{"error":"' . $err . '"}';
+		$retValue = '{"error":"' . $msg . '"}';
+		sendResultInfoAsJson( $retValue );
+	}
+
+	function returnWithInfo( $msg, $contactID, $userID )
+	{
+		$retValue = '{"contactID":' . $contactID . ',"userID":' . $userID . ',"result":"' . $msg . '","error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 
