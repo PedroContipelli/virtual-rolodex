@@ -16,10 +16,17 @@
 	{
 		$stmt = $conn->prepare("INSERT into Contacts (FirstName,LastName,Phone,Email,UserID) VALUES (?,?,?,?,?)");
 		$stmt->bind_param("ssssi", $firstName, $lastName, $phoneNumber, $email, $userId);
-		$stmt->execute();
+
+		if ( $stmt->execute() == True)
+		{
+			returnWithInfo("Contact successfully added", $userId);
+		}
+		else
+		{
+			returnWithError("Failed to add contact");
+		}
 		$stmt->close();
 		$conn->close();
-		returnWithError("");
 	}
 
 	function getRequestInfo()
@@ -33,9 +40,15 @@
 		echo $obj;
 	}
 
-	function returnWithError( $err )
+	function returnWithError( $msg )
 	{
-		$retValue = '{"error":"' . $err . '"}';
+		$retValue = '{"error":"' . $msg . '"}';
+		sendResultInfoAsJson( $retValue );
+	}
+
+	function returnWithInfo( $msg, $userId )
+	{
+		$retValue = '{"userID":' . $userId . ',"result":"' . $msg . '","error":""}';
 		sendResultInfoAsJson( $retValue );
 	}
 
