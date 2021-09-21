@@ -19,8 +19,9 @@
       document.addEventListener('DOMContentLoaded', function()
       {
               readCookie();
-	      displayContact();
       }, false);
+
+      window.onload = () => {displayContact();}
   </script>
 
   <!--  CSS -->
@@ -51,19 +52,19 @@
     <form>
     <div class="form-floating">
       <input type="text" class="form-control" id="firstName" placeholder="fName">
-      <label for="firstName">First Name</label>
+      <label for="firstName" id="firstNameLabel">First Name</label>
     </div>
     <div class="form-floating">
       <input type="text" class="form-control" id="lastName" placeholder="lName">
-      <label for="lastName">Last Name</label>
+      <label for="lastName" id="lastNameLabel">Last Name</label>
     </div>
     <div class="form-floating">
       <input type="tel" class="form-control" id="phoneNumber" placeholder="phone">
-      <label for="phone">Phone Number</label>
+      <label for="phone" id="phoneNumberLabel">Phone Number</label>
     </div>
     <div class="form-floating">
       <input type="email" class="form-control" id="email" placeholder="email">
-      <label for="email">Email</label>
+      <label for="email" id="emailLabel">Email</label>
     </div>
     </br>
 
@@ -73,6 +74,7 @@
 
     </form>
   </main>
+
 </body>
 
 </html>
