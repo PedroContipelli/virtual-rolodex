@@ -297,11 +297,10 @@ function editContact()
                         if (this.readyState == 4 && this.status == 200)
                         {
                                 document.getElementById("contactEditResult").innerHTML = "Contact has been edited";
+		                window.location.href = "manage-contacts.html";
                         }
                 };
                 xhr.send(jsonPayload);
-
-                window.location.href = "manage-contacts.html";
         }
         catch(err)
         {
